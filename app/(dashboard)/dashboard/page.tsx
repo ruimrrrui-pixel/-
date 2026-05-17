@@ -10,7 +10,7 @@ const STATUS_COLORS: Record<string, string> = {
   '応募済み': 'bg-blue-100 text-blue-700',
   'ES提出': 'bg-yellow-100 text-yellow-700',
   '面接中': 'bg-orange-100 text-orange-700',
-  '内定': 'bg-green-100 text-green-700',
+  '内定（合格）': 'bg-green-100 text-green-700',
   '不合格': 'bg-red-100 text-red-700',
   '辞退': 'bg-gray-100 text-gray-500',
 }
@@ -61,8 +61,8 @@ export default function DashboardPage() {
               <p className="text-3xl font-bold text-orange-500">{counts['面接中'] || 0}</p>
             </div>
             <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-              <p className="text-xs text-gray-500 mb-1">内定</p>
-              <p className="text-3xl font-bold text-green-500">{counts['内定'] || 0}</p>
+              <p className="text-xs text-gray-500 mb-1">内定（合格）</p>
+              <p className="text-3xl font-bold text-green-500">{counts['内定（合格）'] || 0}</p>
             </div>
             <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-500 mb-1">ES提出済み</p>
@@ -113,9 +113,9 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
               { href: '/companies', label: '企業を追加', icon: '🏢' },
-              { href: '/es', label: 'ESを書く', icon: '📝' },
-              { href: '/templates', label: 'テンプレート管理', icon: '📋' },
+              { href: '/es', label: 'ES・テンプレート', icon: '📝' },
               { href: '/interviews', label: '面接メモを書く', icon: '🎤' },
+              { href: '/ob', label: 'OB・OG訪問メモ', icon: '☕' },
               { href: '/research', label: '企業研究メモ', icon: '🔍' },
               { href: '/links', label: '就活サービス一覧', icon: '🔗' },
             ].map(item => (

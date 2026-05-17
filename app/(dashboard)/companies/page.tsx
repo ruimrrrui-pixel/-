@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { Company, CompanyStatus, SelectionType } from '@/lib/types'
 
-const STATUSES: CompanyStatus[] = ['気になる', '応募済み', 'ES提出', '面接中', '内定', '不合格', '辞退']
+const STATUSES: CompanyStatus[] = ['気になる', '応募済み', 'ES提出', '面接中', '内定（合格）', '不合格', '辞退']
 const SELECTION_TYPES: SelectionType[] = ['本選考', 'インターン']
 
 const STATUS_COLORS: Record<string, string> = {
@@ -13,7 +13,7 @@ const STATUS_COLORS: Record<string, string> = {
   '応募済み': 'bg-blue-100 text-blue-700',
   'ES提出': 'bg-yellow-100 text-yellow-700',
   '面接中': 'bg-orange-100 text-orange-700',
-  '内定': 'bg-green-100 text-green-700',
+  '内定（合格）': 'bg-green-100 text-green-700',
   '不合格': 'bg-red-100 text-red-700',
   '辞退': 'bg-gray-100 text-gray-500',
 }

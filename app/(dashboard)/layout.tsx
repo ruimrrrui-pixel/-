@@ -8,9 +8,9 @@ import { createClient } from '@/lib/supabase'
 const navItems = [
   { href: '/dashboard', label: 'ダッシュボード', icon: '🏠' },
   { href: '/companies', label: '企業管理', icon: '🏢' },
-  { href: '/es', label: 'ES管理', icon: '📝' },
-  { href: '/templates', label: 'テンプレート', icon: '📋' },
+  { href: '/es', label: 'ES・テンプレート', icon: '📝' },
   { href: '/interviews', label: '面接メモ', icon: '🎤' },
+  { href: '/ob', label: 'OB・OG訪問', icon: '☕' },
   { href: '/research', label: '企業研究', icon: '🔍' },
   { href: '/news', label: 'ニュース', icon: '📰' },
   { href: '/links', label: '就活サービス', icon: '🔗' },

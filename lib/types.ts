@@ -1,4 +1,4 @@
-export type CompanyStatus = '気になる' | '応募済み' | 'ES提出' | '面接中' | '内定' | '不合格' | '辞退'
+export type CompanyStatus = '気になる' | '応募済み' | 'ES提出' | '面接中' | '内定（合格）' | '不合格' | '辞退'
 export type SelectionType = 'インターン' | '本選考'
 
 export interface Company {
@@ -54,6 +54,20 @@ export interface ResearchMemo {
   user_id: string
   company_id: string
   content: string
+  created_at: string
+  updated_at: string
+  company?: Company
+}
+
+export interface OBVisit {
+  id: string
+  user_id: string
+  company_id: string | null
+  visit_date: string | null
+  visitor_name: string | null
+  visitor_department: string | null
+  questions_and_answers: string
+  impression: string | null
   created_at: string
   updated_at: string
   company?: Company
