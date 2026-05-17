@@ -1,4 +1,5 @@
 export type CompanyStatus = '気になる' | '応募済み' | 'ES提出' | '面接中' | '内定' | '不合格' | '辞退'
+export type SelectionType = 'インターン' | '本選考'
 
 export interface Company {
   id: string
@@ -6,6 +7,7 @@ export interface Company {
   name: string
   industry: string | null
   status: CompanyStatus
+  selection_type: SelectionType
   note: string | null
   website: string | null
   created_at: string

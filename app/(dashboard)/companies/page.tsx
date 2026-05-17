@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
-import { Company, CompanyStatus } from '@/lib/types'
+import { Company, CompanyStatus, SelectionType } from '@/lib/types'
 
 const STATUSES: CompanyStatus[] = ['気になる', '応募済み', 'ES提出', '面接中', '内定', '不合格', '辞退']
+const SELECTION_TYPES: SelectionType[] = ['本選考', 'インターン']
 
 const STATUS_COLORS: Record<string, string> = {
   '気になる': 'bg-gray-100 text-gray-700',
@@ -24,9 +25,11 @@ export default function CompaniesPage() {
   const [name, setName] = useState('')
   const [industry, setIndustry] = useState('')
   const [status, setStatus] = useState<CompanyStatus>('気になる')
+  const [selectionType, setSelectionType] = useState<SelectionType>('本選考')
   const [website, setWebsite] = useState('')
   const [saving, setSaving] = useState(false)
   const [filterStatus, setFilterStatus] = useState<string>('すべて')
+  const [filterType, setFilterType] = useState<string>('すべて')
 
   const load = async () => {
     const supabase = createClient()
@@ -42,8 +45,11 @@ export default function CompaniesPage() {
     setSaving(true)
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    await supabase.from('companies').insert({ user_id: user!.id, name, industry, status, website })
-    setName(''); setIndustry(''); setStatus('気になる'); setWebsite('')
+    await supabase.from('companies').insert({
+      user_id: user!.id, name, industry, status,
+      selection_type: selectionType, website
+    })
+    setName(''); setIndustry(''); setStatus('気になる'); setSelectionType('本選考'); setWebsite('')
     setShowForm(false)
     setSaving(false)
     load()
@@ -56,7 +62,9 @@ export default function CompaniesPage() {
     load()
   }
 
-  const filtered = filterStatus === 'すべて' ? companies : companies.filter(c => c.status === filterStatus)
+  const filtered = companies
+    .filter(c => filterStatus === 'すべて' || c.status === filterStatus)
+    .filter(c => filterType === 'すべて' || c.selection_type === filterType)
 
   return (
     <div>
@@ -88,13 +96,20 @@ export default function CompaniesPage() {
                 placeholder="IT・商社・金融など" />
             </div>
             <div>
+              <label className="text-xs text-gray-500">種別</label>
+              <select value={selectionType} onChange={e => setSelectionType(e.target.value as SelectionType)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {SELECTION_TYPES.map(s => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
               <label className="text-xs text-gray-500">ステータス</label>
               <select value={status} onChange={e => setStatus(e.target.value as CompanyStatus)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 {STATUSES.map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
-            <div>
+            <div className="sm:col-span-2">
               <label className="text-xs text-gray-500">Webサイト</label>
               <input value={website} onChange={e => setWebsite(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -114,7 +129,17 @@ export default function CompaniesPage() {
         </form>
       )}
 
-      {/* フィルター */}
+      {/* 種別フィルター */}
+      <div className="flex gap-2 mb-3">
+        {['すべて', ...SELECTION_TYPES].map(t => (
+          <button key={t} onClick={() => setFilterType(t)}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition ${filterType === t ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {/* ステータスフィルター */}
       <div className="flex flex-wrap gap-2 mb-4">
         {['すべて', ...STATUSES].map(s => (
           <button key={s} onClick={() => setFilterStatus(s)}
@@ -134,12 +159,15 @@ export default function CompaniesPage() {
           {filtered.map(co => (
             <div key={co.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <Link href={`/companies/${co.id}`} className="font-medium text-gray-800 hover:text-blue-600 truncate">
                     {co.name}
                   </Link>
                   <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[co.status]}`}>
                     {co.status}
+                  </span>
+                  <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${co.selection_type === 'インターン' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'}`}>
+                    {co.selection_type ?? '本選考'}
                   </span>
                 </div>
                 {co.industry && <p className="text-xs text-gray-400 mt-0.5">{co.industry}</p>}

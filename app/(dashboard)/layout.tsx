@@ -13,6 +13,7 @@ const navItems = [
   { href: '/interviews', label: '面接メモ', icon: '🎤' },
   { href: '/research', label: '企業研究', icon: '🔍' },
   { href: '/news', label: 'ニュース', icon: '📰' },
+  { href: '/links', label: '就活サービス', icon: '🔗' },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
