@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
+import RotatingBanner from '@/components/RotatingBanner'
 
 const STATUS_COLORS: Record<string, string> = {
   '気になる': 'bg-gray-100 text-gray-700',
@@ -103,6 +104,11 @@ export default function DashboardPage() {
             )}
           </div>
 
+          {/* バナー広告 */}
+          <div className="mb-6">
+            <RotatingBanner />
+          </div>
+
           {/* クイックリンク */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
@@ -111,7 +117,7 @@ export default function DashboardPage() {
               { href: '/templates', label: 'テンプレート管理', icon: '📋' },
               { href: '/interviews', label: '面接メモを書く', icon: '🎤' },
               { href: '/research', label: '企業研究メモ', icon: '🔍' },
-              { href: '/news', label: '就活ニュースを見る', icon: '📰' },
+              { href: '/links', label: '就活サービス一覧', icon: '🔗' },
             ].map(item => (
               <Link
                 key={item.href}

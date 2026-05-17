@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import RotatingBanner from '@/components/RotatingBanner'
 
 interface NewsItem {
   title: string
@@ -138,6 +139,13 @@ export default function NewsPage() {
           </a>
         ))}
       </div>
+
+      {/* バナー広告 */}
+      {!loading && news.length > 0 && (
+        <div className="my-6">
+          <RotatingBanner compact />
+        </div>
+      )}
 
       {/* 就活関連サイトへのリンク */}
       <div className="mt-8 bg-blue-50 rounded-xl p-4 border border-blue-100">
