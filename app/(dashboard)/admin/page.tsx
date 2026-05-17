@@ -31,7 +31,7 @@ export default function AdminPage() {
   const router = useRouter()
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [loading, setLoading] = useState(true)
-  const [unauthorized, setUnauthorized] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
   const [sortKey, setSortKey] = useState<keyof UserStat>('created_at')
   const [sortDesc, setSortDesc] = useState(true)
 
@@ -40,15 +40,22 @@ export default function AdminPage() {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
 
-      if (!user || user.email !== ADMIN_EMAIL) {
-        setUnauthorized(true)
+      if (!user) {
+        setErrorMsg('ログインしていません')
+        setLoading(false)
+        return
+      }
+      if (user.email !== ADMIN_EMAIL) {
+        setErrorMsg(`このアカウント（${user.email}）は管理者ではありません`)
         setLoading(false)
         return
       }
 
       const { data, error } = await supabase.rpc('get_admin_stats')
-      if (error || !data) {
-        setUnauthorized(true)
+      if (error) {
+        setErrorMsg(`SQL関数エラー: ${error.message}`)
+      } else if (!data) {
+        setErrorMsg('データが取得できませんでした')
       } else {
         setStats(data)
       }
@@ -59,11 +66,15 @@ export default function AdminPage() {
 
   if (loading) return <p className="text-gray-400 p-8">読み込み中...</p>
 
-  if (unauthorized) {
+  if (errorMsg) {
     return (
       <div className="text-center py-20">
         <p className="text-4xl mb-4">🔒</p>
-        <p className="text-gray-500">アクセス権限がありません</p>
+        <p className="text-gray-500 mb-2">エラー</p>
+        <p className="text-sm text-red-400 bg-red-50 px-4 py-2 rounded-lg inline-block">{errorMsg}</p>
+        <p className="text-xs text-gray-400 mt-4">
+          ※ SQL未実行の場合は ob-admin-sql.sql を Supabase で実行してください
+        </p>
       </div>
     )
   }
