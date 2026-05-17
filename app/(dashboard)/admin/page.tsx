@@ -38,15 +38,16 @@ export default function AdminPage() {
   useEffect(() => {
     const load = async () => {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { session } } = await supabase.auth.getSession()
+      const email = session?.user?.email
 
-      if (!user) {
+      if (!email) {
         setErrorMsg('ログインしていません')
         setLoading(false)
         return
       }
-      if (user.email !== ADMIN_EMAIL) {
-        setErrorMsg(`このアカウント（${user.email}）は管理者ではありません`)
+      if (email !== ADMIN_EMAIL) {
+        setErrorMsg(`このアカウント（${email}）は管理者ではありません`)
         setLoading(false)
         return
       }
@@ -62,7 +63,7 @@ export default function AdminPage() {
       setLoading(false)
     }
     load()
-  }, [router])
+  }, [])
 
   if (loading) return <p className="text-gray-400 p-8">読み込み中...</p>
 
