@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase'
 
 const navItems = [
   { href: '/dashboard', label: 'ダッシュボード', icon: '🏠' },
+  { href: '/schedule', label: '日程管理', icon: '📅' },
   { href: '/companies', label: '企業管理', icon: '🏢' },
   { href: '/es', label: 'ES・テンプレート', icon: '📝' },
   { href: '/interviews', label: '面接メモ', icon: '🎤' },

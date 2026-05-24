@@ -112,12 +112,12 @@ export default function DashboardPage() {
           {/* クイックリンク */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
+              { href: '/schedule', label: '日程管理', icon: '📅' },
               { href: '/companies', label: '企業を追加', icon: '🏢' },
               { href: '/es', label: 'ES・テンプレート', icon: '📝' },
               { href: '/interviews', label: '面接メモを書く', icon: '🎤' },
               { href: '/ob', label: 'OB・OG訪問メモ', icon: '☕' },
               { href: '/research', label: '企業研究メモ', icon: '🔍' },
-              { href: '/links', label: '就活サービス一覧', icon: '🔗' },
             ].map(item => (
               <Link
                 key={item.href}
